@@ -144,13 +144,23 @@
                 <!-- Register Side -->
                 <div class="col-md-6 auth-side register-side" id="registerSide">
                     <h2 class="form-title">Create Account</h2>
+
+
+                    <script>
+                        function showalert(message)
+                        {
+                            alert(message);
+                        }
+                       
+                    </script>
                     <form method="post" enctype="multipart/form-data">
 
                         {% csrf_token %}
+                        <input type="hidden" name="register_submit" value="1">
                         <select class="form-control" name="role" required>
                             <option value="">Select Role</option>
-                            <option value="artist">Artist</option>
-                            <option value="user">Art Enthusiast</option>
+                            <option value="1">Artist</option>
+                            <option value="0">Art Enthusiast</option>
                         </select>
                         <input type="text" class="form-control" placeholder="Full Name" name="name" required>
                         <input type="email" class="form-control" placeholder="Email" name="email" required>
@@ -164,17 +174,30 @@
                     </form>
                 </div>
 
+                {% if messages %}
+                    {% for message in messages %}
+
+                        <script>
+                            showalert("{{ message }}");
+                        </script>
+                    {% endfor %}
+                {% endif %}
+              
+
+
                 <!-- Login Side -->
                 <div class="col-md-6 auth-side login-side hidden" id="loginSide">
                     <h2 class="form-title">Welcome Back</h2>
-                    <form id="loginForm">
-                        <input type="email" class="form-control" placeholder="Email" required>
-                        <input type="password" class="form-control" placeholder="Password" required>
+                    <form method="post">
+                        {% csrf_token %}
+                        <input type="hidden" name="login_submit" value="1">
+                        <input type="email" class="form-control" placeholder="Email" name="email" required>
+                        <input type="password" class="form-control" placeholder="Password" name="password" required>
                         <div class="text-end mb-3">
                             <a href="#" class="forgot-password">Forgot Password?</a>
                         </div>
                         <button type="submit" class="btn-auth">Login</button>
-                        <div class="text-center mt-3">
+                        <div class="text-center mt-3"> 
                             <p>Don't have an account?</p>
                             <button type="button" class="toggle-btn" onclick="toggleForms()">Sign Up</button>
                         </div>
