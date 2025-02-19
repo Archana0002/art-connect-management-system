@@ -152,29 +152,41 @@
 
             {% csrf_token %} 
             <!-- Profile Photo -->
-            <!-- <div class="form-section">
+            <div class="form-section">
                 <div class="form-section-title">Profile Photo</div>
                 <div class="photo-upload">
                     <div class="photo-preview" onclick="document.getElementById('profilePhoto').click()">
                         <img id="photoPreview" src="/api/placeholder/150/150" alt="Profile Preview">
                     </div>
-                    <input type="file" id="profilePhoto" hidden accept="image/*">
+                    <input type="file" id="profilePhoto" hidden accept="image/*" name="profile_photo" onchange="previewImage(event)"> 
                     <small>Click to upload your profile photo</small>
                 </div>
-            </div> -->
+            </div>
+            
+            <script>
+            function previewImage(event) {
+                var reader = new FileReader();
+                reader.onload = function() {
+                    var preview = document.getElementById("photoPreview");
+                    preview.src = reader.result;  // Set the image source to the uploaded file
+                }
+                reader.readAsDataURL(event.target.files[0]); // Read file as DataURL
+            }
+            </script>
+            
 
             <!-- Basic Information -->
             <div class="form-section">
                 <div class="form-section-title">Basic Information</div>
                 <div class="mb-3">
-                    <label for="artistName" class="form-label">Artist Name / Pseudonym</label>
-                    <input type="text" class="form-control" id="artistName"  name="name"required>
+                    <label for="name" class="form-label">Artist Name / Pseudonym</label>
+                    <input type="text" class="form-control" id="name"  name="name">
                 </div>
 
                 <div class="mb-3">
                     <label for="bio" class="form-label">Bio</label>
                     <textarea class="form-control" id="bio" rows="4" 
-                        placeholder="Tell us about yourself, your artistic journey, and what inspires you..." name="bio" required></textarea>
+                        placeholder="Tell us about yourself, your artistic journey, and what inspires you..." name="bio" ></textarea>
                 </div>
             </div>
 
@@ -184,11 +196,11 @@
                 <div class="row">
                     <div class="col-md-6">
                         <label for="email" class="form-label">Email</label>
-                        <input type="email" class="form-control" id="email" name="email" required>
+                        <input type="email" class="form-control" id="email" name="email" >
                     </div>
                     <div class="col-md-6">
                         <label for="phone" class="form-label">Phone Number</label>
-                        <input type="tel" class="form-control" id="phone" name="phone">
+                        <input type="text" class="form-control" id="phone" name="phone">
                     </div>
                 </div>
 
@@ -208,12 +220,12 @@
                     </div>
                     <div class="col-md-6">
                         <label for="website" class="form-label">Personal Website</label>
-                        <input type="url" class="form-control" id="website" placeholder="https://" name="website">
+                        <input type="text" class="form-control" id="website" placeholder="https://" name="website">
                     </div>
                 </div>
             </div>
 
-            <!-- Artist Categories
+            Artist Categories
             <div class="form-section">
                 <div class="form-section-title">Art Categories</div>
                 <div class="mb-3">
@@ -221,25 +233,26 @@
                     <div class="row">
                         <div class="col-md-4">
                             <div class="form-check">
-                                <input class="form-check-input" type="checkbox" id="digital" name="art_cat">
+                                <input class="form-check-input" type="checkbox" id="digital" name="art_cat" value="digital">
                                 <label class="form-check-label" for="digital">Digital Art</label>
                             </div>
                         </div>
                         <div class="col-md-4">
                             <div class="form-check">
-                                <input class="form-check-input" type="checkbox" id="painting">
+                                <input class="form-check-input" type="checkbox" id="painting" name="art_cat" value="painting">
                                 <label class="form-check-label" for="painting">Painting</label>
                             </div>
                         </div>
                         <div class="col-md-4">
                             <div class="form-check">
-                                <input class="form-check-input" type="checkbox" id="sculpture">
+                                <input class="form-check-input" type="checkbox" id="sculpture" name="art_cat" value="sculpture">
                                 <label class="form-check-label" for="sculpture">Sculpture</label>
                             </div>
                         </div>
                     </div>
                 </div>
-            </div> -->
+            </div>
+            
 
             <div class="text-center">
                 <button type="submit" class="btn-glow">Complete Profile Setup</button>

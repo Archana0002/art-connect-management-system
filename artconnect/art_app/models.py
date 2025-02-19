@@ -15,4 +15,14 @@ class Artisttable(models.Model):
     location=models.CharField(max_length=50)
     insta=models.CharField(max_length=50)
     website=models.CharField(max_length=60)
-    art_cat=models.CharField(max_length=30)
+    ART_CATEGORIES = [
+        ('digital', 'Digital Art'),
+        ('painting', 'Painting'),
+        ('sculpture', 'Sculpture'),
+    ]
+    
+    art_categories = models.CharField(max_length=255,default="")  # Store selected categories as comma-separated values
+    profile_photo = models.ImageField(upload_to='profile_photos/', blank=True, null=True)
+
+
+  
