@@ -17,6 +17,7 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path, include
 from art_app import views
+from scraper import views as scraper_views
 
 
 
@@ -28,6 +29,8 @@ urlpatterns = [
     path('user_dash',views.user_dash,name='user_dashboard'),
 
     path('artist_dash',views.artist_reg,name='artist_dashboard'),
-    path('',include('art_app.urls'))
+    path('',include('art_app.urls')),
+    path('',include('scraper.urls'))
+
 
 ]
