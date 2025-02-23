@@ -1,6 +1,13 @@
 from django.db import models
 
 # Create your models here.
+
+class Arttable(models.Model):
+    title=models.CharField(max_length=30)
+    desc=models.CharField(max_length=80)
+    price=models.CharField(max_length=20)
+    img=models.ImageField(upload_to='art_photos/',blank=True,null=True)
+
 class Usertable(models.Model):
     name=models.CharField(max_length=30)
     email=models.CharField(max_length=30)
@@ -21,6 +28,7 @@ class Artisttable(models.Model):
         ('sculpture', 'Sculpture'),
     ]
     
+
     art_categories = models.CharField(max_length=255,default="")  # Store selected categories as comma-separated values
     profile_photo = models.ImageField(upload_to='profile_photos/', blank=True, null=True)
 

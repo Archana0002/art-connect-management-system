@@ -1,5 +1,5 @@
 from django.shortcuts import render, redirect
-from . models import Usertable,Artisttable
+from . models import Usertable,Artisttable,Arttable
 from django.contrib import messages
 from django.contrib.auth.hashers import make_password, check_password
 from django.core.validators import validate_email
@@ -8,7 +8,19 @@ from django.core.files.storage import FileSystemStorage
 
 
 
+def art_upload(request):
+    if request.POST:
+        title=request.POST.get("title")
+        desc=request.POST.get("desc")
+        price=request.POST.get("price")
+        img=request.FILES.get("img")
+        fs = FileSystemStorage(location="media/art_photos/")
+        filename = fs.save(img.name, img)
+        file_url = f"art_photos/{filename}"
+        Art_obj=Arttable(title=title,desc=desc,price=price,img=file_url)
+        Art_obj.save()
 
+    return render(request,'artist_registered.html')
 
 def details_page(request):
     return render(request,'detail.html')
