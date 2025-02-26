@@ -46,7 +46,8 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'art_app',
-    'scraper'
+    'scraper',
+    'artconnect'
 
 ]
 
@@ -65,7 +66,7 @@ ROOT_URLCONF = 'artconnect.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': ['template'],
+        'DIRS': ['artconnect/template','user_app/template','art_app/template','scraper/template'],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [

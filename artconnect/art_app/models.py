@@ -1,23 +1,24 @@
 from django.db import models
 
 # Create your models here.
-
-class Arttable(models.Model):
-    title=models.CharField(max_length=30)
-    desc=models.CharField(max_length=80)
-    price=models.CharField(max_length=20)
-    img=models.ImageField(upload_to='art_photos/',blank=True,null=True)
-
 class Usertable(models.Model):
     name=models.CharField(max_length=30)
     email=models.CharField(max_length=30)
     password=models.CharField(max_length=30)
     role=models.CharField(max_length=30)
 
+class Arttable(models.Model):
+    title=models.CharField(max_length=30)
+    userid=models.CharField(max_length=30)
+    status=models.CharField(max_length=30)
+    desc=models.CharField(max_length=80)
+    price=models.CharField(max_length=20)
+    img=models.ImageField(upload_to='art_photos/',blank=True,null=True)
+
+
 class Artisttable(models.Model):
-    name=models.CharField(max_length=30)
+    userid=models.TextField(max_length=10)
     bio=models.TextField(max_length=100)
-    email=models.CharField(max_length=30)
     phone=models.CharField(max_length=30)
     location=models.CharField(max_length=50)
     insta=models.CharField(max_length=50)

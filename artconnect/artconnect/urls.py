@@ -16,9 +16,9 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
-from art_app import views
-from scraper import views as scraper_views
-
+from . import views
+from django.conf import settings
+from django.conf.urls.static import static
 
 
 
@@ -26,11 +26,14 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('',views.homepage),
     path('register',views.register,name='register_page'),
-    path('user_dash',views.user_dash,name='user_dashboard'),
 
-    path('artist_dash',views.artist_reg,name='artist_dashboard'),
     path('',include('art_app.urls')),
-    path('',include('scraper.urls'))
+    path('',include('scraper.urls')),
+    path('',include('user_app.urls')),
+
+
 
 
 ]
+urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+
