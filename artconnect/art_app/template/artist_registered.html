@@ -148,6 +148,7 @@
             color: var(--accent-color);
             margin-bottom: 1.5rem;
         }
+        
     </style>
 </head>
 <body>
@@ -194,6 +195,17 @@
                     <label class="form-label">Description</label>
                     <textarea class="form-control" id="artworkDescription" rows="3" name="desc"></textarea>
                 </div>
+                <div class="mb-3">
+                    <label class="form-label">Art Type</label>
+                    <select class="form-control" id="artworkType" name="art_type">
+                        <option value="Painting">Painting</option>
+                        <option value="Sculpture">Sculpture</option>
+                        <option value="Digital Art">Digital Art</option>
+                        <option value="Doodlings">Doodlings</option>
+                    </select>
+                </div>
+                
+                
                 <div class="mb-3">
                     <label class="form-label">Price (₹)</label>
                     <input type="number" class="form-control" id="artworkPrice" name="price" >
