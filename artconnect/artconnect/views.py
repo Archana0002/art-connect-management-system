@@ -44,7 +44,8 @@ def register(request):
                     name=name,
                     email=email,
                     password=hashed_password,
-                    role=role
+                    role=role,
+                    status=0
                 )
                 Usertable_obj.save()
                 
@@ -81,9 +82,14 @@ def register(request):
                     )
 
                     if user.role == '0':
-                        return redirect("user_dashboard")
+                        if user.status=='0':
+                            return redirect("user_dashboard")
                     elif user.role == '1':
-                        return redirect("artist_dashboard")
+                        if user.status=='0':
+                            return redirect("artist_dashboard")
+                        else:
+                            return redirect("art_upload")
+
                 else:
                     messages.error(request, "Invalid password. Please try again.", extra_tags='danger')
             except Usertable.DoesNotExist:
