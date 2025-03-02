@@ -86,7 +86,6 @@ def artist_reg(request):
 
 
 
-
 def artist_dash(request):
 
     return render(request, 'artist_dash.html')

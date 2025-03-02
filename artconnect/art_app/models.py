@@ -6,6 +6,8 @@ class Usertable(models.Model):
     email=models.CharField(max_length=30)
     password=models.CharField(max_length=30)
     role=models.CharField(max_length=30)
+    status=models.CharField(max_length=30)
+
 
 class Arttable(models.Model):
     title=models.CharField(max_length=30)
