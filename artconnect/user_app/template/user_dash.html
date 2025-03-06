@@ -226,6 +226,9 @@
                 margin-bottom: 0.5rem;
             }
         }
+        a{
+            text-decoration: none;
+        }
     </style>
 </head>
 <body>
@@ -292,11 +295,11 @@
                 </div>
             </div>
             <div class="d-flex flex-wrap gap-2 mt-3">
-                <button class="filter-btn">All Art</button>
-                <button class="filter-btn">Digital</button>
-                <button class="filter-btn">Paintings</button>
-                <button class="filter-btn">Sculptures</button>
-                <button class="filter-btn">Doodlings</button>
+                <a class="filter-btn" href="{% url 'user_dashboard' %}">All Art</a>
+                <a class="filter-btn" href="{% url 'digital_dashboard' %}">Digital</a>
+                <a class="filter-btn" href="{% url 'paint_dashboard' %}">Paintings</a>
+                <a class="filter-btn" href="{% url 'sclupture_dashboard' %}">Sculptures</a>
+                <a class="filter-btn" href="{% url 'doodling_dashboard' %}">Doodlings</a>
             </div>
         </div>
 
@@ -304,85 +307,34 @@
 <!-- Art Grid -->
 <div class="row g-4">
     <!-- Art Card 1 -->
-    <div class="col-md-6 col-lg-4">
-        <div class="art-card animate__animated animate__fadeIn">
-            <div class="art-image">
-                <img src="OIP.jpg" alt="Digital Dreams">
-            </div>
-            <div class="art-info">
-                <h3 class="art-title">Digital Dreams</h3>
-                <p class="artist-name">by Maria Chen</p>
-                <p class="art-description">A mesmerizing blend of neon colors and geometric patterns that explores the intersection of technology and human consciousness.</p>
-                <div class="art-price">$1,200</div>
-                <div class="rating mb-3">
-                    <span class="star">★</span>
-                    <span class="star">★</span>
-                    <span class="star">★</span>
-                    <span class="star">★</span>
-                    <span class="star">☆</span>
-                    <span class="ms-2">4.5</span>
+    {% if art_list %}
+        {% for art in art_list %}
+                <div class="col-md-6 col-lg-4">
+                    <div class="art-card animate__animated animate__fadeIn">
+                        <div class="art-image">
+                            <img src="{{ art.img.url }}" alt="Digital Dreams">
+                        </div>
+                        
+                        <div class="art-info">
+                            <h3 class="art-title">{{ art.title }}</h3>
+                            <p class="art-description">{{ art.desc }}</p>
+                            <div class="art-price">{{ art.price }}</div>
+                            <div class="rating mb-3">
+                                    <span class="star">★</span>
+                            </div>
+                            <div class="d-flex gap-2">
+                                <a href="{% url 'details' %}"><button class="btn-outline-glow">Details</button></a>
+                                <button class="btn-glow">Buy Now</button>
+                            </div>
+                        </div>
+                    </div>
                 </div>
-                <div class="d-flex gap-2">
-                    <a href="{% url 'details' %}"><button class="btn-outline-glow">Details</button></a>
-                    <button class="btn-glow">Buy Now</button>
-                </div>
-            </div>
-        </div>
-    </div>
+    {% endfor %}
+        {% else %}
+                <p>No art available.</p>
+        {% endif %}
 
-    <!-- Art Card 2 -->
-    <div class="col-md-6 col-lg-4">
-        <div class="art-card animate__animated animate__fadeIn">
-            <div class="art-image">
-                <img src="art-artwork-1822831.jpg" alt="Neon City">
-            </div>
-            <div class="art-info">
-                <h3 class="art-title">Neon City</h3>
-                <p class="artist-name">by Alex Rivera</p>
-                <p class="art-description">A vibrant cityscape capturing the electric pulse of urban life through a kaleidoscope of light and shadow.</p>
-                <div class="art-price">$1,500</div>
-                <div class="rating mb-3">
-                    <span class="star">★</span>
-                    <span class="star">★</span>
-                    <span class="star">★</span>
-                    <span class="star">★</span>
-                    <span class="star">★</span>
-                    <span class="ms-2">5.0</span>
-                </div>
-                <div class="d-flex gap-2">
-                    <a href="detail.html"><button class="btn-outline-glow">Details</button></a>
-                    <button class="btn-glow">Buy Now</button>
-                </div>
-            </div>
-        </div>
-    </div>
 
-    <!-- Art Card 3 -->
-    <div class="col-md-6 col-lg-4">
-        <div class="art-card animate__animated animate__fadeIn">
-            <div class="art-image">
-                <img src="stock-photo-136664977.jpg" alt="Cyber Punk">
-            </div>
-            <div class="art-info">
-                <h3 class="art-title">Cyber Punk</h3>
-                <p class="artist-name">by Sarah Parker</p>
-                <p class="art-description">A futuristic composition that merges retro-tech aesthetics with modern digital art, creating a dystopian yet hopeful vision.</p>
-                <div class="art-price">$2,000</div>
-                <div class="rating mb-3">
-                    <span class="star">★</span>
-                    <span class="star">★</span>
-                    <span class="star">★</span>
-                    <span class="star">★</span>
-                    <span class="star">☆</span>
-                    <span class="ms-2">4.2</span>
-                </div>
-                <div class="d-flex gap-2">
-                    <a href="detail.html"> <button class="btn-outline-glow">Details</button></a>
-                    <button class="btn-glow">Buy Now</button>
-                </div>
-            </div>
-        </div>
-    </div>
 </div>
     <!-- Bootstrap JS and Popper.js -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>

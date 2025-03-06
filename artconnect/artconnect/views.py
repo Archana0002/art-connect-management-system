@@ -75,11 +75,11 @@ def register(request):
                         '1': 'Artist'
                     }
                     
-                    messages.success(
-                        request, 
-                        f"Welcome back, {user.name}! You're logged in as {role_names.get(user.role, 'Unknown')}", 
-                        extra_tags='success'
-                    )
+                    # messages.success(
+                    #     request, 
+                    #     f"Welcome back, {user.name}! You're logged in as {role_names.get(user.role, 'Unknown')}", 
+                    #     extra_tags='success'
+                    # )
 
                     if user.role == '0':
                         if user.status=='0':

@@ -15,6 +15,7 @@ class Arttable(models.Model):
     status=models.CharField(max_length=30)
     desc=models.CharField(max_length=80)
     price=models.CharField(max_length=20)
+    arttype=models.CharField(max_length=20)
     img=models.ImageField(upload_to='art_photos/',blank=True,null=True)
 
 

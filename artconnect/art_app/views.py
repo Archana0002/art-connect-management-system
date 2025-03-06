@@ -1,6 +1,8 @@
 from django.shortcuts import render
 from .models import Artisttable,Arttable,Usertable
 from django.core.files.storage import FileSystemStorage
+from django.contrib import messages  # Import messages
+
 
 
 
@@ -19,12 +21,15 @@ def art_upload(request):
         title=request.POST.get("title")
         desc=request.POST.get("desc")
         price=request.POST.get("price")
+        arttype=request.POST.get("arttype")
         img=request.FILES.get("img")
         fs = FileSystemStorage(location="media/art_photos/")
         filename = fs.save(img.name, img)
         file_url = f"art_photos/{filename}"
-        Art_obj=Arttable(title=title,desc=desc,price=price,img=file_url,userid=id,status=1)
+        Art_obj=Arttable(title=title,desc=desc,price=price,img=file_url,userid=id,status=1,arttype=arttype)
         Art_obj.save()
+        messages.success(request, "Art uploaded successfully!")  # Success message
+
 
     return render(request,'artist_registered.html',context)
 
