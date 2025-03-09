@@ -1,5 +1,6 @@
 [
     {
+<<<<<<< HEAD
         "head": "Sip & Paint by Make It Happen",
         "image_url": "https://res.cloudinary.com/dwzmsvp7f/image/upload/f_auto,w_400/c_crop%2Cg_custom%2Fv1740122108%2Fq9ef5dgsdbvqytsjcqmv.png"
     },
@@ -10,5 +11,25 @@
     {
         "head": "MOG - Museum Of Goa",
         "image_url": "https://res.cloudinary.com/dwzmsvp7f/image/upload/f_auto,w_400/c_crop%2Cg_custom%2Fv1702110042%2Fc0pnbam6grcizl6ifw2m.jpg"
+=======
+        "head": "Pawga Puppy Party (Paint and Read with Puppies)",
+        "image_url": "https://res.cloudinary.com/dwzmsvp7f/image/upload/f_auto,w_400/c_crop%2Cg_custom%2Fv1740663691%2Fyrbcfzmetamoaq70rird.png"
+    },
+    {
+        "head": "Lippan Art Workshop",
+        "image_url": "https://res.cloudinary.com/dwzmsvp7f/image/upload/f_auto,w_400/c_crop%2Cg_custom%2Fv1739084617%2Fvnomll9zzeij481e1nql.jpg"
+    },
+    {
+        "head": "Aroma Candle Making Workshop",
+        "image_url": "https://res.cloudinary.com/dwzmsvp7f/image/upload/f_auto,w_400/c_crop%2Cg_custom%2Fv1726545837%2Fodb8x2wkuldmpbahybqx.png"
+    },
+    {
+        "head": "Folding Ninjas with Roligami",
+        "image_url": "https://res.cloudinary.com/dwzmsvp7f/image/upload/f_auto,w_400/c_crop%2Cg_custom%2Fv1736086173%2Fuvibjm8vddeak9setl6a.png"
+    },
+    {
+        "head": "Paint with Strangers - Presented by Thrifty X | Bengaluru",
+        "image_url": null
+>>>>>>> eb62fefac4e12ccb32d48dd23709fd831cdb145d
     }
 ]
