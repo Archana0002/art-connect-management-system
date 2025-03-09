@@ -33,14 +33,12 @@ def art_upload(request):
 
     return render(request,'artist_registered.html',context)
 
-def details_page(request):
-    return render(request,'detail.html')
+
 
 def artist_page(request):
     return render(request,'artist.html')
 
-def artist_profile_page(request):
-    return render(request,'artist_profile.html')
+
 
 def artist_reg(request):
     id = request.session.get('user_id')  # Default to 7 for testing, use session ID in production

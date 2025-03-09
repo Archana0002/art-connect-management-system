@@ -260,22 +260,22 @@
     <!-- Main Content -->
     <div class="container" style="margin-top: 100px;">
         <!-- Search Bar -->
-        <div class="search-container mb-4">
+        <!-- <div class="search-container mb-4">
             <input type="text" id="searchBox" placeholder="Search artworks..." class="form-control mb-4">
-        </div>
+        </div> -->
         <!-- Filters -->
 
         <div class="filters glass">
             <div class="row g-3">
             <form action="{% url 'search' %}" method="get">  <!-- Form to pass data to 'search' URL -->
-                <div class="col-md-3">
+                <!-- <div class="col-md-3">
                     <select class="form-select bg-black text-light" name="price" onchange="this.form.submit()">
                         <option value="0"{% if price_filter == '0' %}selected{% endif %}>Price Range</option>
                         <option value="1"{% if price_filter == '1' %}selected{% endif %}>Under $100</option>
                         <option value="2"{% if price_filter == '2' %}selected{% endif %}>$100 - $500</option>
                         <option value="3"{% if price_filter == '3' %}selected{% endif %}>$1000+</option>
                     </select>
-                </div>  
+                </div>   -->
             </form>
             </div>
             <div class="d-flex flex-wrap gap-2 mt-3">
@@ -284,7 +284,7 @@
                 <a class="filter-btn" href="{% url 'paint_dashboard' %}">Paintings</a>
                 <a class="filter-btn" href="{% url 'sclupture_dashboard' %}">Sculptures</a>
                 <a class="filter-btn" href="{% url 'doodling_dashboard' %}">Doodlings</a>
-                <a class="filter-btn" href="{% url 'myorders_dashboard' %}">My Orders</a>
+                <a class="filter-btn" href="">My Orders</a>
 
             </div>
         </div>
@@ -298,33 +298,48 @@
 
 
     <!-- Art Card 1 -->
-    {% if art_list %}
-        {% for art in art_list %}
-                <div class="col-md-6 col-lg-4">
-                    <div class="art-card animate__animated animate__fadeIn">
-                        <div class="art-image">
-                            <img src="{{ art.img.url }}" alt="Digital Dreams">
-                        </div>
-                        
-                        <div class="art-info">
-                            <h3 class="art-title">{{ art.title }}</h3>
-                            <p class="art-description">{{ art.desc }}</p>
-                            <div class="art-price">{{ art.price }}</div>
-                            <div class="rating mb-3">
-                                    <span class="star">★</span>
-                            </div>
-                            <div class="d-flex gap-2">
-                                <a href="{% url 'details' art.id %}"><button class="btn-outline-glow">Details</button></a>
-                                <!-- <button class=""></button> -->
-                            </div>
-                        </div>
-                    </div>
+{% if art_list and orderdetails %}
+{% for art, order in zip_items %}
+    <div class="col-md-6 col-lg-4">
+        <div class="art-card animate__animated animate__fadeIn">
+            <div class="art-image">
+                <img src="{{ art.img.url }}" alt="Digital Dreams">
+            </div>
+            
+            <div class="art-info">
+                <h3 class="art-title">{{ art.title }}</h3>
+                <p class="art-description">{{ art.desc }}</p>
+                <div class="art-price">{{ art.price }}</div>
+                <p class="payment-status" style="color: #2ecc71;">
+                    <strong>Payment Status:</strong> Success
+                </p>
+                
+                <!-- Delivery Status -->
+                <p class="delivery-status">
+                    <strong>Delivery Status:</strong> pending
+                </p>
+                
+                <!-- Transaction ID -->
+                <p class="transaction-id">
+                    <strong>Transaction ID:</strong> {{ order.payment_id }}
+                </p>
+                
+                <!-- Delivery Date -->
+                <p class="delivery-date">
+                    <strong>Delivery Date:</strong> {{ art.delivery_date }}
+                </p>
+                
+                <div class="d-flex gap-2">
+                    <a href="{% url 'details' art.id %}"><button class="btn-outline-glow">Details</button></a>
+                    <!-- <button class=""></button> -->
                 </div>
-    {% endfor %}
-        {% else %}
-                <p>No art available.</p>
-        {% endif %}
-
+            </div>
+        </div>
+    </div>
+{% endfor %}
+{% else %}
+<p>No art available.</p>
+{% endif %}
 
 </div>
     <!-- Bootstrap JS and Popper.js -->

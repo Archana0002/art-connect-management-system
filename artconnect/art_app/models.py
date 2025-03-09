@@ -8,6 +8,25 @@ class Usertable(models.Model):
     role=models.CharField(max_length=30)
     status=models.CharField(max_length=30)
 
+class reviewtable(models.Model):
+    userid=models.CharField(max_length=30)
+    product_id=models.CharField(max_length=30)
+    rev_title=models.CharField(max_length=30)
+    rev_body=models.CharField(max_length=30)
+    rating=models.CharField(max_length=30)
+    date=models.DateField(auto_now_add=True)
+
+
+
+
+class Ordertable(models.Model):
+    payment_id=models.CharField(max_length=30)
+    user_id=models.CharField(max_length=30)
+    product_id=models.CharField(max_length=30)
+    date=models.DateField(auto_now_add=True)
+    delivery_date=models.CharField(max_length=30)
+    delivery_address=models.CharField(max_length=30)
+    delivery_status=models.CharField(max_length=30)
 
 class Arttable(models.Model):
     title=models.CharField(max_length=30)

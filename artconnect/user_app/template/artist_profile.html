@@ -184,20 +184,18 @@
 </head>
 <body>
     <div class="profile-header text-center">
-        <img src="art.jpeg" alt="Maria Chen" class="profile-image animate__animated animate__fadeIn">
-        <h1 class="artist-name animate__animated animate__fadeInUp">Maria Chen</h1>
+        <img src="{{ artist_details.profile_photo.url }}" alt="Maria Chen" class="profile-image animate__animated animate__fadeIn">
+        <h1 class="artist-name animate__animated animate__fadeInUp">{{ user_artist.name }}</h1>
         <p class="lead mb-4 animate__animated animate__fadeInUp">Digital Artist & Visual Storyteller</p>
         
     </div>
 
     <div class="container">
         <div class="bio-section glass animate__animated animate__fadeIn">
-            <h2 class="mb-4">About Maria</h2>
-            <p>A visionary digital artist based in San Francisco, Maria Chen pushes the boundaries of digital art through her unique blend of cyberpunk aesthetics and emotional storytelling. With over a decade of experience in digital media, her work explores themes of human consciousness, technology, and the intersection of reality and dreams.</p>
+            <h2 class="mb-4">About {{ user_artist.name }}</h2>
+            <p>{{ artist_details.bio }}</p>
             <div class="tags mt-4">
-                <span class="tag">Digital Art</span>
-                <span class="tag">Cyberpunk</span>
-                <span class="tag">NFT Artist</span>
+                <span class="tag">Digital Art</span>   
                 <span class="tag">Visual Design</span>
                 <span class="tag">3D Modeling</span>
             </div>
@@ -205,35 +203,33 @@
 
         <h2 class="mb-4">Featured Artworks</h2>
         <div class="artwork-grid">
-            <div class="artwork-card glass animate__animated animate__fadeIn">
-                <img src="OIP.jpg" alt="Digital Dreams">
-                <div class="artwork-info">
-                    <h3>Digital Dreams</h3>
-                    <p>2024 • Digital Art</p>
-                </div>
-            </div>
-            <div class="artwork-card glass animate__animated animate__fadeIn">
-                <img src="OIP.jpg" alt="Neon Shadows">
-                <div class="artwork-info">
-                    <h3>Neon Shadows</h3>
-                    <p>2024 • Digital Art</p>
-                </div>
-            </div>
-            <div class="artwork-card glass animate__animated animate__fadeIn">
-                <img src="OIP.jpg" alt="Cyber Horizon">
-                <div class="artwork-info">
-                    <h3>Cyber Horizon</h3>
-                    <p>2023 • Digital Art</p>
-                </div>
-            </div>
-            <div class="artwork-card glass animate__animated animate__fadeIn">
-                <img src="OIP.jpg" alt="Virtual Echoes">
-                <div class="artwork-info">
-                    <h3>Virtual Echoes</h3>
-                    <p>2023 • Digital Art</p>
-                </div>
-            </div>
-        </div>
+            {% if artist_details_art %}
+                 {% for art in artist_details_art %}
+                        <div class="artwork-card glass animate__animated animate__fadeIn">
+                            <img src="{{ art.img.url }}" alt="Digital Dreams">
+                            <div class="artwork-info">
+                                <h3>{{ art.title }}</h3>
+                                <p>
+                                    {% if art.arttype == '0' %}
+                                        Painting
+                                    {% elif art.arttype == '1' %}
+                                        Sculpture
+                                    {% elif art.arttype == '2' %}
+                                        Digital
+                                    {% elif art.arttype == '3' %}
+                                        Doodling
+                                    {% else %}
+                                        Unknown
+                                    {% endif %}
+                                </p>
+                            </div>
+                        </div>
+                    {% endfor %}
+            {% else %}
+                <p>No art available.</p>
+            {% endif %}
+                
+          
     </div>
 
     <script>
