@@ -24,6 +24,12 @@ urlpatterns = [
 
     path("reviewpage/<int:id>/",views.reviewpage,name="reviewpage"),
 
+    path('addtocart/<int:id>/', views.addtocart, name='addtocart'),
+
+    path('mycart/', views.mycart, name='mycart'),
+
+
+
     
 
 
