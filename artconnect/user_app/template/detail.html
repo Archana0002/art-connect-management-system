@@ -235,7 +235,7 @@
 
                     <div class="d-flex gap-3 mt-4">
                         <a class="btn-glow flex-grow-1" href="{% url 'paymentpage' art.id %}"  style="text-decoration: none;">Buy</a>
-                        <a href="#" style="text-decoration: none;" class="btn-glow flex-grow-1">Chat</a>
+                        <a href="#" style="text-decoration: none;" class="btn-glow flex-grow-1" onclick="toggleChat(); return false;">Chat</a>
                         <a href="{% url 'reviewpage' art.id %}" style="text-decoration: none;" class="btn-glow flex-grow-1">Review</a>
                         <a href="" style="text-decoration: none;" class="btn-glow flex-grow-1">Cart</a>
 
@@ -256,7 +256,7 @@
                             <div class="d-flex align-items-center">
                                 <img src="reviewer1.jpg" alt="John Doe" class="rounded-circle me-3" style="width: 50px; height: 50px;">
                                 <div>
-                                    <h5 class="mb-0">John Doe</h5>
+                                    <h5 class="mb-0">Chat with {{ user_artist.name }}</h5>
                                     <small class="text-muted">2 days ago</small>
                                 </div>
                             </div>
@@ -303,8 +303,8 @@
         </div>
         <div class="chat-input">
             <div class="input-group">
-                <input type="text" class="form-control bg-dark text-light border-0" placeholder="Type your message...">
-                <button class="btn btn-glow">Send</button>
+                <input type="text" class="form-control bg-dark text-light border-0" placeholder="Type your message..." id="messageInput" onkeypress="sendOnEnter(event)">
+                <button class="btn btn-glow" onclick="sendMessage()">Send</button>
             </div>
         </div>
     </div>
@@ -319,6 +319,40 @@
             // Add your artist profile navigation logic here
             window.location.href = 'artist-profile.html';
         }
+
+        function sendMessage() {
+    const messageInput = document.getElementById('messageInput');
+    const message = messageInput.value.trim();
+    
+    if (message) {
+        const chatMessages = document.getElementById('chatMessages');
+        const messageElement = document.createElement('div');
+        messageElement.className = 'message sent';
+        messageElement.textContent = message;
+        chatMessages.appendChild(messageElement);
+        
+        // Auto-scroll to the bottom
+        chatMessages.scrollTop = chatMessages.scrollHeight;
+        
+        // Clear input
+        messageInput.value = '';
+        
+        // Simulate artist response after a delay
+        setTimeout(() => {
+            const responseElement = document.createElement('div');
+            responseElement.className = 'message received';
+            responseElement.textContent = "Thank you for your message! I'll get back to you soon.";
+            chatMessages.appendChild(responseElement);
+            chatMessages.scrollTop = chatMessages.scrollHeight;
+        }, 1000);
+    }
+}
+
+function sendOnEnter(event) {
+    if (event.key === 'Enter') {
+        sendMessage();
+    }
+}
 
         // Add animation on scroll
         document.addEventListener('DOMContentLoaded', function() {
