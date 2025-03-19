@@ -65,44 +65,13 @@
             display: inline-block;
         }
 
-        .search-form {
-            background: var(--card-bg);
-            backdrop-filter: blur(10px);
-            border-radius: 50px;
-            padding: 0.75rem;
+        .city-buttons {
             display: flex;
+            justify-content: center;
+            gap: 1rem;
+            flex-wrap: wrap;
             max-width: 600px;
             margin: 0 auto 2.5rem;
-            border: 1px solid rgba(0, 255, 204, 0.3);
-            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
-            transition: all 0.3s ease;
-        }
-
-        .search-form:hover {
-            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.3), 0 0 15px rgba(0, 255, 204, 0.3);
-        }
-
-        .search-form label {
-            display: flex;
-            align-items: center;
-            margin-right: 10px;
-            margin-left: 15px;
-            color: var(--primary-color);
-            font-size: 1.1rem;
-        }
-
-        .search-form input {
-            flex-grow: 1;
-            background: transparent;
-            border: none;
-            color: var(--text-light);
-            padding: 0.5rem;
-            font-size: 1.1rem;
-            outline: none;
-        }
-
-        .search-form input::placeholder {
-            color: rgba(255, 255, 255, 0.4);
         }
 
         .cyber-btn {
@@ -294,20 +263,13 @@
                 font-size: 2.5rem;
             }
             
-            .search-form {
+            .city-buttons {
                 flex-direction: column;
-                padding: 1rem;
-                border-radius: 25px;
+                align-items: center;
             }
             
-            .search-form label {
-                margin-bottom: 0.5rem;
-                margin-left: 0;
-            }
-            
-            .search-form input {
-                width: 100%;
-                margin-bottom: 0.8rem;
+            .cyber-btn {
+                width: 80%;
             }
             
             .event-grid {
@@ -350,15 +312,14 @@
             <h1>Art Exhibitions</h1>
         </div>
 
-        <form method="GET" action="{% url 'scrape_events' %}" class="search-form animate__animated animate__fadeInUp">
-            <label for="city"><i class="fas fa-map-marker-alt"></i></label>
-            <input type="text" id="city" name="num" placeholder="Enter city name (e.g. bengaluru)">
-            <button type="submit" class="cyber-btn">Discover</button>
-        </form>
+        <div class="city-buttons animate__animated animate__fadeInUp">
+            <a href="{% url 'scrape_events' %}?num=bengaluru" class="cyber-btn">Bengaluru</a>
+            <a href="{% url 'scrape_events' %}?num=goa" class="cyber-btn">Goa</a>
+            <a href="{% url 'scrape_events' %}?num=chennai" class="cyber-btn">Chennai</a>
+            <a href="{% url 'scrape_events' %}?num=delhi" class="cyber-btn">Delhi</a>
+        </div>
 
-        <button onclick="location.reload();" class="cyber-btn refresh-btn animate__animated animate__fadeInUp" style="animation-delay: 0.2s">
-            <i class="fas fa-sync-alt"></i> Refresh Data
-        </button>
+        
 
         {% if events %}
             <div class="event-grid">

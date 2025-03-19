@@ -60,14 +60,17 @@
             position: relative;
             max-width: 500px;
             margin: 0 auto;
+            
         }
+
+        
 
         .search-bar {
             background: rgba(255, 255, 255, 0.1);
             border: 2px solid rgba(255, 255, 255, 0.1);
             border-radius: 25px;
             padding: 0.5rem 1rem;
-            color: white;
+            color: rgb(255, 255, 255);
             width: 100%;
             transition: all 0.3s ease;
         }
@@ -169,7 +172,7 @@
         .btn-glow {
             background: linear-gradient(45deg, var(--primary-color), var(--secondary-color));
             border: none;
-            color: white;
+            color: rgb(255, 255, 255);
             padding: 0.7rem 1.5rem;
             border-radius: 25px;
             transition: all 0.3s ease;
@@ -312,9 +315,7 @@
                             <h3 class="art-title">{{ art.title }}</h3>
                             <p class="art-description">{{ art.desc }}</p>
                             <div class="art-price">{{ art.price }}</div>
-                            <div class="rating mb-3">
-                                    <span class="star">★</span>
-                            </div>
+                            
                             <div class="d-flex gap-2">
                                 <a href="{% url 'details' art.id %}"><button class="btn-outline-glow">Details</button></a>
                                 <!-- <button class=""></button> -->
