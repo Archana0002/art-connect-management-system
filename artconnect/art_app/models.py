@@ -56,4 +56,7 @@ class Artisttable(models.Model):
     profile_photo = models.ImageField(upload_to='profile_photos/', blank=True, null=True)
 
 
-  
+class Carttable(models.Model):
+    productid=models.IntegerField()
+    userid=models.IntegerField()
+    status=models.IntegerField()

@@ -237,7 +237,9 @@
                         <a class="btn-glow flex-grow-1" href="{% url 'paymentpage' art.id %}"  style="text-decoration: none;">Buy</a>
                         <a href="#" style="text-decoration: none;" class="btn-glow flex-grow-1" onclick="toggleChat(); return false;">Chat</a>
                         <a href="{% url 'reviewpage' art.id %}" style="text-decoration: none;" class="btn-glow flex-grow-1">Review</a>
-                        <a href="" style="text-decoration: none;" class="btn-glow flex-grow-1">Cart</a>
+
+                        <a href="{% url 'addtocart' art.id %}" style="text-decoration: none;" class="btn-glow flex-grow-1">Cart</a>
+
 
 
                     </div>
@@ -251,38 +253,37 @@
                 <h2 class="mb-4">Reviews</h2>
                 <div class="reviews-container">
                     <!-- Review Card 1 -->
-                    <div class="review-card animate__animated animate__fadeIn">
-                        <div class="d-flex justify-content-between align-items-center mb-3">
-                            <div class="d-flex align-items-center">
-                                <img src="reviewer1.jpg" alt="John Doe" class="rounded-circle me-3" style="width: 50px; height: 50px;">
-                                <div>
-                                    <h5 class="mb-0">Chat with {{ user_artist.name }}</h5>
-                                    <small class="text-muted">2 days ago</small>
+                    {% for review, user in reviews_with_users %}
+                        <div class="review-card animate__animated animate__fadeIn">
+                            <div class="d-flex justify-content-between align-items-center mb-3">
+                                <div class="d-flex align-items-center">
+                                    <!-- <img src="" alt="{{ user.name }}" class="rounded-circle me-3" style="width: 50px; height: 50px;"> -->
+                                    <div>
+                                        <h5 class="mb-0">{{ user.name }}</h5>
+                                        <small class="text-muted">{{ review.date }}</small>
+                                    </div>
+                                </div>
+                                <div class="rating">
+                                    {% for i in "12345"|make_list %}
+                                        {% if forloop.counter <= review.rating|default:0|floatformat %}
+                                            ★
+                                        {% else %}
+                                            ☆
+                                        {% endif %}
+                                    {% endfor %}
+                                    <span class="ms-2">{{ review.rating }}/5</span>
                                 </div>
                             </div>
-                            <div class="rating">
-                                ★★★★★ <span class="ms-2">5.0</span>
-                            </div>
+                            <h6 class="fw-bold">{{ review.rev_title }}</h6>
+                            <p>{{ review.rev_body }}</p>
                         </div>
-                        <p>Absolutely stunning piece! The attention to detail and the way the colors blend together is mesmerizing. This artwork perfectly captures the essence of digital dreams.</p>
-                    </div>
+                    {% empty %}
+                        <p>No reviews yet.</p>
+                    {% endfor %}
+                    
 
                     <!-- Review Card 2 -->
-                    <div class="review-card animate__animated animate__fadeIn">
-                        <div class="d-flex justify-content-between align-items-center mb-3">
-                            <div class="d-flex align-items-center">
-                                <img src="reviewer2.jpg" alt="Jane Smith" class="rounded-circle me-3" style="width: 50px; height: 50px;">
-                                <div>
-                                    <h5 class="mb-0">Jane Smith</h5>
-                                    <small class="text-muted">1 week ago</small>
-                                </div>
-                            </div>
-                            <div class="rating">
-                                ★★★★☆ <span class="ms-2">4.0</span>
-                            </div>
-                        </div>
-                        <p>The technical execution is flawless, and the concept is intriguing. Would love to see more works in this series.</p>
-                    </div>
+                
                 </div>
             </div>
         </div>

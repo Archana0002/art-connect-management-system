@@ -1,5 +1,5 @@
 from django.shortcuts import render,get_object_or_404,redirect,reverse
-from art_app.models import Arttable,Usertable,Artisttable,Ordertable,reviewtable
+from art_app.models import Arttable,Usertable,Artisttable,Ordertable,reviewtable,Carttable
 
 from django.http import JsonResponse
 from django.template.loader import render_to_string
@@ -67,9 +67,12 @@ def details_page(request,id):
     user_id=art.userid
 
     user_artist = get_object_or_404(Usertable, id=user_id)  # Fetch the art object by ID
+    reviews = reviewtable.objects.filter(product_id=id)
+    user_details = [get_object_or_404(Usertable, id=review.userid) for review in reviews]
+    reviews_with_users = zip(reviews, user_details)
 
 
-    return render(request, 'detail.html', {'art': art,'user_artist':user_artist})
+    return render(request, 'detail.html', {'art': art,'user_artist':user_artist,'reviews_with_users': reviews_with_users})
 
 
 
@@ -175,6 +178,8 @@ def myorders(request):
 
     return render(request,'user_dash_orders.html',context)
 
+
+
 def reviewpage(request,id):
     if request.method == 'POST':
         reviewtable_obj = reviewtable(
@@ -190,3 +195,39 @@ def reviewpage(request,id):
       
 
     return render(request,'review.html')
+
+
+
+
+def addtocart(request, id):
+    user_id = request.session.get('user_id')
+
+    # Check if the combination of productid and userid already exists
+    existing_cart = Carttable.objects.filter(productid=id, userid=user_id).exists()
+
+    if not existing_cart:
+        # If the product is not already in the cart, add it
+        cartbox = Carttable(productid=id, userid=user_id, status=0)
+        cartbox.save()
+
+    return redirect('details', id=id)
+
+def mycart(request):
+    user_id = request.session.get('user_id')  # Get logged-in user ID
+
+    # Get all cart items for the user
+    cart_items = Carttable.objects.filter(userid=user_id)
+
+    # Fetch corresponding products from Arttable
+    art_list = Arttable.objects.filter(id__in=[item.productid for item in cart_items])
+
+    # Pass the data to the template
+    context = {
+        'art_list': art_list  # Products corresponding to cart items
+    }
+
+    return render(request, 'user_dash.html', context)  # Ensure 'user_cart.html' exists
+
+
+
+
