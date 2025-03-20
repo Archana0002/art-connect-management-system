@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html lang="en">
-<!-- Previous head section and CSS styles remain exactly as in your original code -->
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -149,9 +148,305 @@
             margin-bottom: 1.5rem;
         }
         
+        /* Chat Button Styles */
+        .chat-button-container {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            z-index: 999;
+        }
+
+        .chat-button {
+            background: linear-gradient(45deg, var(--primary-color), var(--secondary-color));
+            border: none;
+            border-radius: 50%;
+            width: 60px;
+            height: 60px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 4px 20px rgba(107, 70, 193, 0.6);
+            cursor: pointer;
+            position: relative;
+            color: white;
+            transition: all 0.3s ease;
+            animation: pulse 2s infinite;
+        }
+
+        .chat-button:hover {
+            transform: scale(1.1);
+            box-shadow: 0 6px 25px rgba(107, 70, 193, 0.8);
+        }
+
+        .chat-bubble {
+            position: absolute;
+            right: 70px;
+            background: var(--glass-effect);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 8px 15px;
+            font-size: 14px;
+            white-space: nowrap;
+            opacity: 0;
+            transform: translateX(20px);
+            transition: all 0.3s ease;
+        }
+
+        .chat-button:hover .chat-bubble {
+            opacity: 1;
+            transform: translateX(0);
+        }
+
+        /* Chat Modal Styles */
+        .chat-modal {
+            position: fixed;
+            bottom: 100px;
+            right: 30px;
+            width: 350px;
+            height: 450px;
+            background: linear-gradient(135deg, rgba(26, 26, 58, 0.95) 0%, rgba(42, 42, 90, 0.95) 100%);
+            backdrop-filter: blur(10px);
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+            display: flex;
+            flex-direction: column;
+            z-index: 1000;
+            overflow: hidden;
+            visibility: hidden;
+            opacity: 0;
+            transform: translateY(20px);
+            transition: all 0.3s ease;
+        }
+
+        .chat-modal.visible {
+            visibility: visible;
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .chat-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 20px;
+            background: linear-gradient(45deg, var(--primary-color), var(--secondary-color));
+            border-top-left-radius: 15px;
+            border-top-right-radius: 15px;
+        }
+
+        .chat-header h3 {
+            margin: 0;
+            color: white;
+            font-size: 16px;
+        }
+
+        .close-button {
+            background: none;
+            border: none;
+            color: white;
+            font-size: 24px;
+            cursor: pointer;
+        }
+
+        .chat-messages {
+            flex: 1;
+            padding: 15px;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .message {
+            display: flex;
+            flex-direction: column;
+            max-width: 80%;
+        }
+
+        .user-message {
+            align-self: flex-end;
+        }
+
+        .artist-message {
+            align-self: flex-start;
+        }
+
+        .message-bubble {
+            padding: 10px 15px;
+            border-radius: 18px;
+            font-size: 14px;
+            margin-bottom: 2px;
+        }
+
+        .user-message .message-bubble {
+            background: var(--primary-color);
+            color: white;
+            border-bottom-right-radius: 5px;
+        }
+
+        .artist-message .message-bubble {
+            background: var(--glass-effect);
+            color: var(--text-light);
+            border-bottom-left-radius: 5px;
+        }
+
+        .timestamp {
+            font-size: 10px;
+            opacity: 0.7;
+            margin-top: 2px;
+        }
+
+        .user-message .timestamp {
+            align-self: flex-end;
+        }
+
+        .artist-message .timestamp {
+            align-self: flex-start;
+        }
+
+        .chat-input-container {
+            display: flex;
+            padding: 10px;
+            background: rgba(0, 0, 0, 0.2);
+        }
+
+        #messageInput {
+            flex: 1;
+            padding: 10px 15px;
+            border-radius: 20px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            background: rgba(255, 255, 255, 0.1);
+            color: white;
+        }
+
+        .send-button {
+            background: linear-gradient(45deg, var(--primary-color), var(--secondary-color));
+            border: none;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            margin-left: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .send-button:hover {
+            transform: scale(1.1);
+        }
+
+        /* Animation */
+        @keyframes pulse {
+            0% {
+                box-shadow: 0 0 0 0 rgba(107, 70, 193, 0.7);
+            }
+            70% {
+                box-shadow: 0 0 0 15px rgba(107, 70, 193, 0);
+            }
+            100% {
+                box-shadow: 0 0 0 0 rgba(107, 70, 193, 0);
+            }
+        }
+        
+    /* Order Details Styles */
+    .order-section {
+        margin-top: 3rem;
+    }
+    
+    .table {
+        color: var(--text-light);
+        border-collapse: separate;
+        border-spacing: 0 8px;
+        margin-top: 1rem;
+    }
+    
+    .table thead th {
+        border: none;
+        background: rgba(0, 0, 0, 0.2);
+        padding: 12px 15px;
+        font-size: 14px;
+        font-weight: 500;
+    }
+    
+    .table tbody tr {
+        background: rgba(255, 255, 255, 0.05);
+        transition: all 0.3s ease;
+    }
+    
+    .table tbody tr:hover {
+        background: rgba(255, 255, 255, 0.1);
+        transform: scale(1.01);
+    }
+    
+    .table td {
+        padding: 12px 15px;
+        border: none;
+        vertical-align: middle;
+    }
+    
+    .status-badge {
+        padding: 5px 10px;
+        border-radius: 12px;
+        font-size: 12px;
+        font-weight: 500;
+    }
+    
+    .status-processing {
+        background-color: #3B82F6;
+        color: white;
+    }
+    
+    .status-shipped {
+        background-color: #8B5CF6;
+        color: white;
+    }
+    
+    .status-delivered {
+        background-color: #10B981;
+        color: white;
+    }
+    
+    .status-cancelled {
+        background-color: #EF4444;
+        color: white;
+    }
+    
+    .status-paid {
+        background-color: #10B981;
+        color: white;
+    }
+    
+    .status-refunded {
+        background-color: #F59E0B;
+        color: white;
+    }
+    
+    .btn-icon {
+        background: rgba(255, 255, 255, 0.1);
+        border: none;
+        width: 32px;
+        height: 32px;
+        border-radius: 50%;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        color: var(--text-light);
+        cursor: pointer;
+        transition: all 0.2s ease;
+    }
+    
+    .btn-icon:hover {
+        background: rgba(255, 255, 255, 0.2);
+        transform: scale(1.1);
+    }
+    
+    .edit-btn:hover {
+        color: var(--accent-color);
+    }
     </style>
-
-
 </head>
 <body>
 
@@ -165,10 +460,6 @@
         {% endfor %}
     </div>
     {% endif %}
-
-    
-
-
 
     <div class="profile-container">
         <div class="welcome-header animate__animated animate__fadeIn">
@@ -258,14 +549,301 @@
             </div>
         </div>
         
+        <!-- Order Details Section -->
+<div class="order-section animate__animated animate__fadeIn">
+    <h2 class="section-title">Order Management</h2>
+    <button id="viewOrdersBtn" class="btn-glow mb-4">View Order Details</button>
+    
+    <div id="orderTableContainer" style="display: none;" class="glass-form">
+        <div class="table-responsive">
+            <table class="table table-dark table-hover">
+                <thead>
+                    <tr>
+                        <th>Order ID</th>
+                        <th>Artwork</th>
+                        <th>Customer</th>
+                        <th>Price</th>
+                        <th>Order Date</th>
+                        <th>Status</th>
+                        <th>Payment</th>
+                        <th>Delivery Date</th>
+                        
+                    </tr>
+                </thead>
+                <tbody>
+                    <!-- Sample data, replace with your actual data -->
+                    <tr>
+                        <td>#ORD-2301</td>
+                        <td>Summer Bliss</td>
+                        <td>Jane Smith</td>
+                        <td>₹12,500</td>
+                        <td>15 Mar 2025</td>
+                        <td><span class="status-badge status-processing">Processing</span></td>
+                        <td><span class="status-badge status-paid">Paid</span></td>
+                        <td>22 Mar 2025</td>
+                        
+                    </tr>
+                    <tr>
+                        <td>#ORD-2302</td>
+                        <td>Urban Dreams</td>
+                        <td>Alex Johnson</td>
+                        <td>₹8,750</td>
+                        <td>10 Mar 2025</td>
+                        <td><span class="status-badge status-shipped">Shipped</span></td>
+                        <td><span class="status-badge status-paid">Paid</span></td>
+                        <td>18 Mar 2025</td>
+                        
+                    </tr>
+                    <tr>
+                        <td>#ORD-2303</td>
+                        <td>Midnight Serenade</td>
+                        <td>Maria Garcia</td>
+                        <td>₹15,200</td>
+                        <td>5 Mar 2025</td>
+                        <td><span class="status-badge status-delivered">Delivered</span></td>
+                        <td><span class="status-badge status-paid">Paid</span></td>
+                        <td>12 Mar 2025</td>
+                        
+                    </tr>
+                    
+                </tbody>
+            </table>
         </div>
-
-        
+    </div>
+</div>
     </div>
 
-    <!-- Previous scripts remain the same -->
+    <!-- Floating Chat Button -->
+    <div class="chat-button-container">
+        <button id="chatButton" class="chat-button">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
+            </svg>
+            <span class="chat-bubble">Chat with Artist</span>
+        </button>
+    </div>
+
+    <!-- Chat Modal -->
+    <div id="chatModal" class="chat-modal">
+        <div class="chat-header">
+            <h3>Chat with {{ results.0.name }}</h3>
+            <button id="closeChat" class="close-button">×</button>
+        </div>
+        <div class="chat-messages" id="chatMessages">
+            <div class="message artist-message">
+                <div class="message-bubble">
+                    Hi there! I'm {{ results.0.name }}. How can I help you with my artwork today?
+                </div>
+                <div class="timestamp">Just now</div>
+            </div>
+        </div>
+        <div class="chat-input-container">
+            <input type="text" id="messageInput" placeholder="Type your message...">
+            <button id="sendMessage" class="send-button">
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <line x1="22" y1="2" x2="11" y2="13"></line>
+                    <polygon points="22 2 15 22 11 13 2 9 22 2"></polygon>
+                </svg>
+            </button>
+        </div>
+    </div>
+
+    <!-- Scripts -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-
-
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const chatButton = document.getElementById('chatButton');
+            const chatModal = document.getElementById('chatModal');
+            const closeChat = document.getElementById('closeChat');
+            const messageInput = document.getElementById('messageInput');
+            const sendMessage = document.getElementById('sendMessage');
+            const chatMessages = document.getElementById('chatMessages');
+            
+            // Toggle chat modal
+            chatButton.addEventListener('click', function() {
+                chatModal.classList.toggle('visible');
+            });
+            
+            // Close chat modal
+            closeChat.addEventListener('click', function() {
+                chatModal.classList.remove('visible');
+            });
+            
+            // Send message function
+            function sendUserMessage() {
+                const message = messageInput.value.trim();
+                if (message === '') return;
+                
+                // Get current time
+                const now = new Date();
+                const time = now.getHours() + ':' + (now.getMinutes() < 10 ? '0' : '') + now.getMinutes();
+                
+                // Create and append user message
+                const userMessageHTML = `
+                    <div class="message user-message">
+                        <div class="message-bubble">${message}</div>
+                        <div class="timestamp">${time}</div>
+                    </div>
+                `;
+                chatMessages.innerHTML += userMessageHTML;
+                
+                // Clear input
+                messageInput.value = '';
+                
+                // Scroll to bottom
+                chatMessages.scrollTop = chatMessages.scrollHeight;
+                
+                // Simulate artist response (after a delay)
+                setTimeout(function() {
+                    // Sample responses - in a real app, this would be handled by your backend
+                    const responses = [
+                        "Thanks for your interest! Would you like to know more about this piece?",
+                        "I appreciate your message! Do you have any questions about my artwork?",
+                        "That's a great question! This piece was inspired by...",
+                        "I'd be happy to discuss pricing and shipping options for this artwork."
+                    ];
+                    
+                    const randomResponse = responses[Math.floor(Math.random() * responses.length)];
+                    
+                    const artistMessageHTML = `
+                        <div class="message artist-message">
+                            <div class="message-bubble">${randomResponse}</div>
+                            <div class="timestamp">${time}</div>
+                        </div>
+                    `;
+                    chatMessages.innerHTML += artistMessageHTML;
+                    
+                    // Scroll to bottom
+                    chatMessages.scrollTop = chatMessages.scrollHeight;
+                }, 1000);
+            }
+            
+            // Send message on button click
+            sendMessage.addEventListener('click', sendUserMessage);
+            
+            // Send message on enter key
+            messageInput.addEventListener('keypress', function(e) {
+                if (e.key === 'Enter') {
+                    sendUserMessage();
+                }
+            });
+        });
+    </script>
+<script>
+    // Order details toggle functionality
+    document.addEventListener('DOMContentLoaded', function() {
+        const viewOrdersBtn = document.getElementById('viewOrdersBtn');
+        const orderTableContainer = document.getElementById('orderTableContainer');
+        
+        viewOrdersBtn.addEventListener('click', function() {
+            if (orderTableContainer.style.display === 'none') {
+                orderTableContainer.style.display = 'block';
+                viewOrdersBtn.textContent = 'Hide Order Details';
+                
+                // Add animation class
+                orderTableContainer.classList.add('animate__animated', 'animate__fadeIn');
+                
+                // Scroll to the table
+                setTimeout(() => {
+                    orderTableContainer.scrollIntoView({ behavior: 'smooth' });
+                }, 100);
+            } else {
+                orderTableContainer.style.display = 'none';
+                viewOrdersBtn.textContent = 'View Order Details';
+                
+                // Remove animation classes
+                orderTableContainer.classList.remove('animate__animated', 'animate__fadeIn');
+            }
+        });
+    });
+    // Add this script at the end of your existing JavaScript, just before the closing </body> tag
+document.addEventListener('DOMContentLoaded', function() {
+    // Find all order table rows and attach click handlers to the delivery date cells
+    const orderTable = document.querySelector('.table');
+    if (orderTable) {
+        const rows = orderTable.querySelectorAll('tbody tr');
+        
+        rows.forEach(row => {
+            // Get the delivery date cell (8th column, index 7)
+            const deliveryDateCell = row.cells[7];
+            
+            // Make delivery date cell clickable
+            deliveryDateCell.classList.add('editable');
+            deliveryDateCell.style.cursor = 'pointer';
+            deliveryDateCell.title = 'Click to edit delivery date';
+            
+            // Add click event to make the cell editable
+            deliveryDateCell.addEventListener('click', function() {
+                const currentDate = this.textContent.trim();
+                
+                // Create date input element
+                const dateInput = document.createElement('input');
+                dateInput.type = 'date';
+                dateInput.className = 'form-control form-control-sm';
+                
+                // Try to convert the display date format to yyyy-mm-dd for the input
+                try {
+                    // Parse date like "22 Mar 2025"
+                    const parts = currentDate.split(' ');
+                    const day = parts[0];
+                    const month = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'].indexOf(parts[1]) + 1;
+                    const year = parts[2];
+                    
+                    // Format as YYYY-MM-DD
+                    const formattedMonth = month < 10 ? '0' + month : month;
+                    const formattedDay = day < 10 ? '0' + day : day;
+                    dateInput.value = `${year}-${formattedMonth}-${formattedDay}`;
+                } catch(e) {
+                    // If parsing fails, leave the input empty
+                    console.log('Date parsing error:', e);
+                }
+                
+                // Replace the cell content with the input
+                const originalContent = this.innerHTML;
+                this.innerHTML = '';
+                this.appendChild(dateInput);
+                
+                // Focus the input
+                dateInput.focus();
+                
+                // Save on blur
+                dateInput.addEventListener('blur', function() {
+                    const newDate = this.value;
+                    if (newDate) {
+                        // Convert from yyyy-mm-dd to "DD MMM YYYY" format
+                        const date = new Date(newDate);
+                        const day = date.getDate();
+                        const month = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'][date.getMonth()];
+                        const year = date.getFullYear();
+                        
+                        deliveryDateCell.innerHTML = `${day} ${month} ${year}`;
+                        
+                        // Here you would typically save the change to your backend
+                        console.log(`Order ${row.cells[0].textContent} delivery date updated to ${day} ${month} ${year}`);
+                        
+                        // Visual feedback
+                        deliveryDateCell.classList.add('bg-success');
+                        setTimeout(() => {
+                            deliveryDateCell.classList.remove('bg-success');
+                        }, 1000);
+                    } else {
+                        // If date is empty, revert to original
+                        deliveryDateCell.innerHTML = originalContent;
+                    }
+                });
+                
+                // Also save on Enter key
+                dateInput.addEventListener('keydown', function(e) {
+                    if (e.key === 'Enter') {
+                        this.blur();
+                    } else if (e.key === 'Escape') {
+                        deliveryDateCell.innerHTML = originalContent;
+                    }
+                });
+            });
+        });
+    }
+});
+</script>
 </body>
 </html>
