@@ -67,7 +67,7 @@ def artist_reg(request):
         file_url = f"profile_photos/{filename}"  # Relative path for the database
 
         
-
+        Usertable.objects.filter(id=id).update(status=1)
         Artisttable_obj=Artisttable(bio=bio,phone=phone,location=location,insta=insta,website=website,art_categories=categories_str,profile_photo=file_url,userid=id)
         Artisttable_obj.save()
     return render(request,'artist_dash.html',context)
