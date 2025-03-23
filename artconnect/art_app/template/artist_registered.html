@@ -830,15 +830,17 @@
     
     <div id="orderTableContainer" style="display: none;" class="glass-form">
         <div class="table-responsive">
+            {% if orders %}
+
             <table class="table table-dark table-hover">
                 <thead>
                     <tr>
-                        <th>Order ID</th>
-                        <th>Artwork</th>
-                        <th>Customer</th>
+                        <th>Buyer Name</th>
+                        <th>Buyer Email</th>
+                        <th>Product Title</th>
                         <th>Price</th>
-                        <th>Order Date</th>
-                        <th>Status</th>
+
+                        
                         <th>Payment</th>
                         <th>Delivery Date</th>
                         
@@ -846,45 +848,40 @@
                 </thead>
                 <tbody>
                     <!-- Sample data, replace with your actual data -->
+                    {% for order in orders %}
                     <tr>
-                        <td>#ORD-2301</td>
-                        <td>Summer Bliss</td>
-                        <td>Jane Smith</td>
-                        <td>₹12,500</td>
-                        <td>15 Mar 2025</td>
-                        <td><span class="status-badge status-processing">Processing</span></td>
+                        <td>{{ order.buyer_name }}</td>
+                        <td>{{ order.buyer_email }}</td>
+                        <td>{{ order.product_title }}</td>
+                        <td>{{ order.price }}</td>
                         <td><span class="status-badge status-paid">Paid</span></td>
-                        <td>22 Mar 2025</td>
-                        <td><button class="btn-save-date" data-order-id="#ORD-2301">Save</button></td>
-                        
+                    
+                        <!-- Delivery Date Input -->
+                        <td>
+                        {% if order.del_date %}
+                            <input type="date" name="date_delivery" value="{{ order.del_date }}" readonly>
+                        {% else %}
+                            <form action="{% url 'update_delivery_date' order.order_id %}" method="POST">
+                                {% csrf_token %}
+                                <input type="date" name="date_delivery" required>
+                        {% endif %}
+                        </td>
+                    
+                        <!-- Submit Button -->
+                        <td>
+                                <button type="submit">Update Date</button>
+                            </form>
+                        </td>
                     </tr>
-                    <tr>
-                        <td>#ORD-2302</td>
-                        <td>Urban Dreams</td>
-                        <td>Alex Johnson</td>
-                        <td>₹8,750</td>
-                        <td>10 Mar 2025</td>
-                        <td><span class="status-badge status-shipped">Shipped</span></td>
-                        <td><span class="status-badge status-paid">Paid</span></td>
-                        <td>18 Mar 2025</td>
-                        <td><button class="btn-save-date" data-order-id="#ORD-2301">Save</button></td>
-                        
-                    </tr>
-                    <tr>
-                        <td>#ORD-2303</td>
-                        <td>Midnight Serenade</td>
-                        <td>Maria Garcia</td>
-                        <td>₹15,200</td>
-                        <td>5 Mar 2025</td>
-                        <td><span class="status-badge status-delivered">Delivered</span></td>
-                        <td><span class="status-badge status-paid">Paid</span></td>
-                        <td>12 Mar 2025</td>
-                        <td><button class="btn-save-date" data-order-id="#ORD-2301">Save</button></td>
-                        
-                    </tr>
+                    {% endfor %}
+                    
+
                     
                 </tbody>
             </table>
+            {% else %}
+    <p>No orders found for your products.</p>
+{% endif %}
         </div>
     </div>
 </div>

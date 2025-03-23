@@ -6,6 +6,7 @@ from scrapy.crawler import CrawlerProcess
 from scrapy.utils.project import get_project_settings
 from scraper.scraper.spiders.event_scrapper import EventScraper
 from scraper.scraper.spiders.scruplutre import sclupture_scraper
+
 def scrape_events(request):
     city = request.GET.get("city", "bengaluru")
     number = request.GET.get("num")
