@@ -9,6 +9,8 @@ from scrapy.utils.log import configure_logging
 from scraper.scraper.spiders.event_scrapper import EventScraper
 
 from scraper.scraper.spiders.scruplutre import sclupture_scraper
+from scraper.scraper.spiders.painting import PaintingScraper
+
 
 
 # Set up logging
@@ -106,3 +108,60 @@ def sclupture(request):
 
     return render(request,'sclupture.html', {"events": events})
 
+
+
+
+
+
+def run_spider_p(start_url):
+    """
+    Runs the Scrapy spider in a separate process to avoid Twisted reactor issues.
+    """
+    configure_logging({'LOG_LEVEL': 'ERROR'})  # Reduce log verbosity
+
+    process = CrawlerProcess(get_project_settings())
+
+    try:
+        process.crawl(PaintingScraper, start_urls=[start_url])
+        process.start()
+    except Exception as e:
+        logging.error(f"Spider crawling error: {e}")
+
+def painting(request):
+    """
+    Django view to scrape paintings dynamically.
+    """
+    start_url = "https://internationalgallery.org/"
+
+    # Create 'scraper' directory if not exists
+    os.makedirs('scraper', exist_ok=True)
+
+    # Run Scrapy Spider in a separate process
+    spider_process = Process(target=run_spider_p, args=(start_url,))
+    spider_process.start()
+    spider_process.join()  # Wait for scraping to complete
+
+    # Read scraped data safely
+    json_file = "scraper/scraped_data_painting.json"
+    try:
+        if not os.path.exists(json_file):
+            logging.error(f"Scraped data file not found: {json_file}")
+            return render(request, "painting.html", {"events": [], "error": "No paintings found"})
+
+        with open(json_file, "r", encoding="utf-8") as f:
+            events = json.load(f)
+
+        # Validate and filter scraped data
+        if not isinstance(events, list):
+            raise ValueError("Invalid JSON format - Expected a list")
+
+        events = [event for event in events if event.get('head') and event.get('image_url')]
+
+    except (FileNotFoundError, json.JSONDecodeError, ValueError) as e:
+        logging.error(f"Error loading JSON: {e}")
+        events = []
+
+    return render(request, "painting.html", {
+        "events": events,
+        "total_events": len(events)
+    })
