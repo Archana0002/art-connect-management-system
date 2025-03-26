@@ -28,6 +28,9 @@ urlpatterns = [
 
     path('mycart/', views.mycart, name='mycart'),
 
+    path('chatsystem/<int:receiver_id>/', views.chatsystem, name='chatsystem'),
+
+
 
 
     

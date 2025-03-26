@@ -248,7 +248,7 @@
                         <a class="nav-link" href="{% url 'artist' %}">Artists</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="{% url 'scrape_events' %}">Live Events</a>
+                        <a class="nav-link" href="{% url 'scrape_events' 1 %}">Live Events</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="{% url 'sclupture_show' %}">Gallery</a>
@@ -328,7 +328,8 @@
                 
                 <!-- Delivery Date -->
                 <p class="delivery-date">
-                    <strong>Delivery Date:</strong> {{ art.delivery_date }}
+                    <strong>Delivery Date:</strong> {{ order.delivery_date|default_if_none:"Will be notified" }}
+
                 </p>
                 
                 <div class="d-flex gap-2">

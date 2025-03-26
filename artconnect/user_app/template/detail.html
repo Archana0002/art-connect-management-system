@@ -309,7 +309,9 @@
 
                     <div class="d-flex gap-3 mt-4">
                         <a class="btn-glow flex-grow-1" href="{% url 'paymentpage' art.id %}"  style="text-decoration: none;">Buy</a>
-                        <a href="#" style="text-decoration: none;" class="btn-glow flex-grow-1" onclick="toggleChat(); return false;">Chat</a>
+
+                        <a style="text-decoration: none;" class="btn-glow flex-grow-1" href="{% url 'chatsystem' user_artist.id %}">Chat</a>
+
                         <a href="{% url 'reviewpage' art.id %}" style="text-decoration: none;" class="btn-glow flex-grow-1">Review</a>
 
                         <a href="{% url 'addtocart' art.id %}" style="text-decoration: none;" class="btn-glow flex-grow-1">Cart</a>

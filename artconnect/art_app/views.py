@@ -1,18 +1,146 @@
 from django.shortcuts import render,redirect
 from .models import Artisttable,Arttable,Usertable,Ordertable
 from django.core.files.storage import FileSystemStorage
+from django.contrib.auth import authenticate, login, logout
 from django.contrib import messages  # Import messages
 from django.http import HttpResponse
 from django.views.decorators.csrf import csrf_exempt
-
-
-
-
-
 from django.shortcuts import render
 from django.core.files.storage import FileSystemStorage
 from django.contrib import messages
-from .models import Usertable, Arttable, Ordertable, Artisttable
+from .models import Usertable, Arttable, Ordertable, Artisttable,Message
+from django.http import JsonResponse
+from django.utils import timezone
+from django.db.models import Q  
+
+def get_user_messages(request, other_user_id):
+    """
+    Retrieve messages between the current user and another user
+    """
+    if 'user_id' not in request.session:
+        return JsonResponse({'error': 'User not logged in'}, status=401)
+    
+    current_user_id = request.session['user_id']
+    
+    # Fetch messages between the two users using Q objects
+    messages = Message.objects.filter(
+        Q(sender_id=current_user_id, receiver_id=other_user_id) | 
+        Q(sender_id=other_user_id, receiver_id=current_user_id)
+    ).order_by('timestamp')
+    
+    # Mark messages as read
+    Message.objects.filter(
+        Q(sender_id=other_user_id, receiver_id=current_user_id, is_read=False)
+    ).update(is_read=True)
+    
+    # Convert messages to a list of dictionaries
+    message_list = [{
+        'sender': msg.sender_id,
+        'content': msg.content,
+        'timestamp': msg.timestamp.strftime("%I:%M %p"),
+        'is_read': msg.is_read
+    } for msg in messages]
+    
+    return JsonResponse({'messages': message_list})
+
+def get_user_list(request):
+    """ Retrieve list of all users with their last message and unread count, sorted by unread messages """
+    if 'user_id' not in request.session:
+        return JsonResponse({'error': 'User not logged in'}, status=401)
+
+    current_user_id = request.session['user_id']
+
+    # Fetch all users except the current user
+    users = Usertable.objects.exclude(id=current_user_id)
+
+    user_list = []
+    for user in users:
+        # Get the last message (if any) using Q objects
+        last_message = Message.objects.filter(
+            Q(sender_id=current_user_id, receiver_id=user.id) |
+            Q(sender_id=user.id, receiver_id=current_user_id)
+        ).order_by('-timestamp').first()
+
+        # Count unread messages
+        unread_count = Message.objects.filter(
+            sender_id=user.id, receiver_id=current_user_id, is_read=False
+        ).count()
+
+        user_data = {
+            'id': user.id,
+            'name': user.name,
+            'avatar': user.name[:2].upper(),
+            'last_message': last_message.content if last_message else 'No messages yet',
+            'time': last_message.timestamp.strftime("%I:%M %p") if last_message else '',
+            'unread': unread_count
+        }
+        user_list.append(user_data)
+
+    # Sort users by unread messages count in descending order
+    user_list.sort(key=lambda x: x['unread'], reverse=True)
+
+    return JsonResponse({'users': user_list})
+
+
+@csrf_exempt
+def send_message(request):
+    """
+    Send a new message
+    """
+    if request.method != 'POST':
+        return JsonResponse({'error': 'Invalid request method'}, status=405)
+    
+    if 'user_id' not in request.session:
+        return JsonResponse({'error': 'User not logged in'}, status=401)
+    
+    sender_id = request.session['user_id']
+    receiver_id = request.POST.get('receiver_id')
+    content = request.POST.get('content')
+    
+    if not receiver_id or not content:
+        return JsonResponse({'error': 'Missing receiver or content'}, status=400)
+    
+    # Create new message
+    new_message = Message.objects.create(
+        sender_id=sender_id,
+        receiver_id=receiver_id,
+        content=content,
+        timestamp=timezone.now(),
+        is_read=False
+    )
+    
+    return JsonResponse({
+        'message': {
+            'sender': sender_id,
+            'content': content,
+            'timestamp': new_message.timestamp.strftime("%I:%M %p")
+        }
+    })
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 def art_upload(request):
     id = request.session.get('user_id', 1)  # Default to 1 for testing, use session ID in production
