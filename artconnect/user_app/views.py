@@ -1,5 +1,7 @@
 from django.shortcuts import render,get_object_or_404,redirect,reverse
-from art_app.models import Arttable,Usertable,Artisttable,Ordertable,reviewtable,Carttable
+from art_app.models import Arttable,Usertable,Artisttable,Ordertable,reviewtable,Carttable,Message
+from django.utils import timezone
+from django.views.decorators.csrf import csrf_exempt
 
 from django.http import JsonResponse
 from django.template.loader import render_to_string
@@ -9,6 +11,54 @@ import secrets
 
 
 # Create your views here.
+
+def chatsystem(request, receiver_id):
+    sender_id = request.session.get('user_id')  # Get sender ID from session
+
+    if not sender_id:
+        return redirect('login')  # Redirect if user not logged in
+
+    # Fetch messages between sender and receiver
+    messages = Message.objects.filter(
+        sender_id__in=[sender_id, receiver_id], 
+        receiver_id__in=[sender_id, receiver_id]
+    ).order_by('timestamp')
+
+    # Fetch recipient (doctor) details
+    try:
+        doctor = Usertable.objects.get(id=receiver_id)
+    except Usertable.DoesNotExist:
+        doctor = None
+
+    if request.method == "POST":
+        content = request.POST.get('messagebox', '').strip()
+        if content:
+            Message.objects.create(
+                sender_id=sender_id,
+                receiver_id=receiver_id,
+                content=content,
+                timestamp=timezone.now(),
+                is_read=False
+            )
+        return redirect(f'/chatsystem/{receiver_id}/')  # Refresh chat
+
+    return render(request, 'chat_box.html', {
+        'messages': messages,
+        'doctor': doctor,
+        'user_id': sender_id
+    })
+
+
+
+
+
+
+
+
+
+
+
+
 
 def user_dash(request):
     art_list = Arttable.objects.all()
