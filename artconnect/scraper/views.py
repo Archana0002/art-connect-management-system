@@ -8,7 +8,7 @@ from scrapy.utils.project import get_project_settings
 from scrapy.utils.log import configure_logging
 from scraper.scraper.spiders.event_scrapper import EventScraper
 
-from scraper.scraper.spiders.scruplutre import sclupture_scraper
+from scraper.scraper.spiders.scruplutre import SculptureSpider
 from scraper.scraper.spiders.painting import PaintingScraper
 
 
@@ -92,21 +92,24 @@ def scrape_events(request, city_id):
 
 
 
-def sclupture(request):
-    start_url = f"https://www.metmuseum.org/art/collection/search?showOnly=withImage&department=3"
-
-    # Run the Scrapy spider dynamically
+def run_spider_s():
     process = CrawlerProcess(get_project_settings())
-    process.crawl(sclupture_scraper, start_urls=[start_url])
+    process.crawl(SculptureSpider)
     process.start()
 
+def sclupture(request):
+    # Use multiprocessing to run the spider in a separate process
+    spider_process = Process(target=run_spider_s)
+    spider_process.start()
+    spider_process.join()
+
     try:
-        with open("scraper/scraped_data_scluptrue.json", "r", encoding="utf-8") as f:
+        with open("scraper/scraped_data_sculpture.json", "r", encoding="utf-8") as f:
             events = json.load(f)
     except (FileNotFoundError, json.JSONDecodeError):
         events = []
 
-    return render(request,'sclupture.html', {"events": events})
+    return render(request, 'sclupture.html', {"events": events})
 
 
 
