@@ -308,7 +308,13 @@
                     </div>
 
                     <div class="d-flex gap-3 mt-4">
-                        <a class="btn-glow flex-grow-1" href="{% url 'paymentpage' art.id %}"  style="text-decoration: none;">Buy</a>
+
+                        {% if art.status == "1" %}
+                        <a class="btn-glow flex-grow-1" href="{% url 'paymentpage' art.id %}" style="text-decoration: none; background-color: green; color: white;">Buy</a>
+                    {% else %}
+                        <span class="btn-glow flex-grow-1" style="text-decoration: none; background-color: red; color: white; padding: 10px; border-radius: 5px;">Sold out</span>
+                    {% endif %}
+                    
 
                         <a style="text-decoration: none;" class="btn-glow flex-grow-1" href="{% url 'chatsystem' user_artist.id %}">Chat</a>
 

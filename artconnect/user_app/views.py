@@ -182,6 +182,8 @@ def paymentpage(request,id):
 
 def process_payment(request):
     if request.method == 'POST':
+        product_id = request.POST.get('product_id')
+
         try:
             # Just log the data received without trying to save anything
             print("Received data:", dict(request.POST))
@@ -195,6 +197,8 @@ def process_payment(request):
                    delivery_status=0
                 )
             Ordertable_obj.save()
+            Arttable.objects.filter(id=product_id).update(status="0")
+
             
             # Return success without doing anything database-related
             return JsonResponse({
