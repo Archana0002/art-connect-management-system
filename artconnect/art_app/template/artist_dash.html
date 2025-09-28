@@ -139,6 +139,14 @@
 </head>
 
 <body>
+    <li class="nav-item">
+        <form id="logout-form" action="{% url 'logout' %}" method="post" style="display: none;">
+            {% csrf_token %}
+        </form>
+        <a href="#" class="nav-link" onclick="document.getElementById('logout-form').submit();">
+            <i class="fas fa-arrow-left me-2"></i> Logout
+        </a>
+    </li>
     <div class="setup-container">
         <div class="welcome-header animate__animated animate__fadeIn">
             <h1 class="welcome-title">Welcome to ArtConnect!</h1>

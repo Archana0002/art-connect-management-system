@@ -141,12 +141,11 @@ def send_message(request):
 
 
 
-
 def art_upload(request):
     id = request.session.get('user_id', 1)  # Default to 1 for testing, use session ID in production
     results = Usertable.objects.filter(id=id)  # Get user details
     details = Artisttable.objects.filter(userid=id)  # Get artist details
-    art_list = Arttable.objects.filter(userid=id, status=1)  # Get user art list
+    art_list = Arttable.objects.filter(userid=id)  # Get user art list
 
     if request.POST:
         title = request.POST.get("title")

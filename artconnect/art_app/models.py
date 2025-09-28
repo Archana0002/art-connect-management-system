@@ -3,7 +3,14 @@ from django.utils import timezone
 
 # Create your models here.
 
+class Enquirytable(models.Model):
+    email = models.EmailField()
+    phone = models.CharField(max_length=20, blank=True, null=True)
+    message = models.TextField()
+    submitted_at = models.DateTimeField(auto_now_add=True)
 
+    def __str__(self):
+        return f"Enquiry from {self.email}"
 
 
 class Message(models.Model):
@@ -50,7 +57,7 @@ class Arttable(models.Model):
     userid=models.CharField(max_length=30)
     status=models.CharField(max_length=30)
     desc=models.CharField(max_length=80)
-    price=models.CharField(max_length=20)
+    price=models.IntegerField()
     arttype=models.CharField(max_length=20)
     img=models.ImageField(upload_to='art_photos/',blank=True,null=True)
 

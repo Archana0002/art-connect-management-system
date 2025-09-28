@@ -720,9 +720,89 @@
     .edit-btn:hover {
         color: var(--accent-color);
     }
+    .logout-nav-container {
+    position: fixed;
+    top: 20px;
+    left: 20px;
+    z-index: 999;
+    }
+
+    .logout-link {
+        color: var(--text-light) !important;
+        background: linear-gradient(45deg, var(--primary-color), var(--secondary-color));
+        border-radius: 25px;
+        padding: 8px 16px !important;
+        display: flex;
+        align-items: center;
+        transition: all 0.3s ease;
+        box-shadow: 0 4px 10px rgba(107, 70, 193, 0.4);
+    }
+
+    .logout-link:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 6px 15px rgba(107, 70, 193, 0.6);
+        color: white !important;
+    }
+
+    .logout-link svg {
+        margin-right: 6px;
+    }
+    .chat-users-list {
+            width: 100%;
+            height: 100%;
+            overflow-y: auto;
+            padding-bottom: 10px;
+            /* Ensure content doesn't get cut off at bottom */
+            scrollbar-width: thin;
+            scrollbar-color: var(--primary-color) transparent;
+        }
+        
+        /* Style for scrollbars in webkit browsers */
+        .chat-users-list::-webkit-scrollbar {
+            width: 6px;
+        }
+        
+        .chat-users-list::-webkit-scrollbar-track {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 3px;
+        }
+        
+        .chat-users-list::-webkit-scrollbar-thumb {
+            background: var(--primary-color);
+            border-radius: 3px;
+        }
+        
+        .chat-users-list::-webkit-scrollbar-thumb:hover {
+            background: var(--secondary-color);
+        }
+        
+        /* Fix the height of the user list view */
+        #userListView {
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+            width: 100%;
+        }
     </style>
 </head>
 <body>
+    <div class="logout-nav-container">
+        <ul class="nav flex-column">
+            <li class="nav-item">
+                <form id="logout-form" action="{% url 'logout' %}" method="post" style="display: none;">
+                    {% csrf_token %}
+                </form>
+                <a href="#" class="nav-link logout-link" onclick="document.getElementById('logout-form').submit();">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="me-2">
+                        <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path>
+                        <polyline points="16 17 21 12 16 7"></polyline>
+                        <line x1="21" y1="12" x2="9" y2="12"></line>
+                    </svg>
+                    Logout
+                </a>
+            </li>
+        </ul>
+    </div>
 
     {% if messages %}
     <div class="container mt-3">
@@ -791,7 +871,7 @@
                 
                 
                 <div class="mb-3">
-                    <label class="form-label">Price (₹)</label>
+                    <label class="form-label">Price</label>
                     <input type="number" class="form-control" id="artworkPrice" name="price" >
                 </div>
                 <div class="mb-3">
@@ -906,6 +986,18 @@
             </div>
             <div class="chat-users-list" id="chatUsersList">
                 <!-- User list will be populated here -->
+                <div id="scrollButtons" class="scroll-buttons">
+                    <button id="scrollUp" class="scroll-button scroll-up">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <polyline points="18 15 12 9 6 15"></polyline>
+                        </svg>
+                    </button>
+                    <button id="scrollDown" class="scroll-button scroll-down">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <polyline points="6 9 12 15 18 9"></polyline>
+                        </svg>
+                    </button>
+                </div>
             </div>
         </div>
 
@@ -1114,6 +1206,112 @@
             // Initialize
             populateUserList();
         });
-    </script>
-</body>
-</html>
+
+        document.addEventListener('DOMContentLoaded', function() {
+            // Function to handle scrolling in the chat users list
+            function enableChatListScrolling() {
+                const chatUsersList = document.getElementById('chatUsersList');
+                
+                // Make sure the container has proper height to enable scrolling
+                const chatModal = document.getElementById('chatModal');
+                const chatHeader = document.querySelector('.chat-header');
+                
+                // Calculate and set the correct height for the users list
+                function updateChatUsersListHeight() {
+                    if (chatHeader && chatUsersList) {
+                        const modalHeight = chatModal.clientHeight;
+                        const headerHeight = chatHeader.clientHeight;
+                        // Set height to modal height minus header height
+                        chatUsersList.style.height = (modalHeight - headerHeight) + 'px';
+                        chatUsersList.style.overflowY = 'auto';
+                    }
+                }
+                
+                // Update height when the chat modal becomes visible
+                const chatButton = document.getElementById('chatButton');
+                chatButton.addEventListener('click', function() {
+                    // Allow time for the modal to be fully visible
+                    setTimeout(updateChatUsersListHeight, 100);
+                });
+                
+                // Also update height on window resize
+                window.addEventListener('resize', function() {
+                    if (chatModal.classList.contains('visible')) {
+                        updateChatUsersListHeight();
+                    }
+                });
+                
+                // Initial update
+                setTimeout(updateChatUsersListHeight, 100);
+            }
+            
+            // Add scroll buttons to the chat users list if they don't exist
+            function addScrollButtons() {
+                const chatUsersList = document.getElementById('chatUsersList');
+                
+                // Create scroll buttons container if it doesn't exist
+                let scrollButtons = document.getElementById('scrollButtons');
+                if (!scrollButtons) {
+                    scrollButtons = document.createElement('div');
+                    scrollButtons.id = 'scrollButtons';
+                    scrollButtons.style.position = 'absolute';
+                    scrollButtons.style.right = '10px';
+                    scrollButtons.style.top = '50%';
+                    scrollButtons.style.transform = 'translateY(-50%)';
+                    scrollButtons.style.display = 'flex';
+                    scrollButtons.style.flexDirection = 'column';
+                    scrollButtons.style.gap = '5px';
+                    scrollButtons.style.zIndex = '10';
+                    
+                    // Create up button
+                    const scrollUp = document.createElement('button');
+                    scrollUp.id = 'scrollUp';
+                    scrollUp.innerHTML = '▲';
+                    scrollUp.style.width = '30px';
+                    scrollUp.style.height = '30px';
+                    scrollUp.style.padding = '0';
+                    scrollUp.style.border = 'none';
+                    scrollUp.style.borderRadius = '50%';
+                    scrollUp.style.background = 'var(--primary-color)';
+                    scrollUp.style.color = 'white';
+                    scrollUp.style.cursor = 'pointer';
+                    
+                    // Create down button
+                    const scrollDown = document.createElement('button');
+                    scrollDown.id = 'scrollDown';
+                    scrollDown.innerHTML = '▼';
+                    scrollDown.style.width = '30px';
+                    scrollDown.style.height = '30px';
+                    scrollDown.style.padding = '0';
+                    scrollDown.style.border = 'none';
+                    scrollDown.style.borderRadius = '50%';
+                    scrollDown.style.background = 'var(--primary-color)';
+                    scrollDown.style.color = 'white';
+                    scrollDown.style.cursor = 'pointer';
+                    
+                    // Add buttons to container
+                    scrollButtons.appendChild(scrollUp);
+                    scrollButtons.appendChild(scrollDown);
+                    
+                    // Add container to chat users list parent
+                    chatUsersList.parentElement.style.position = 'relative';
+                    chatUsersList.parentElement.appendChild(scrollButtons);
+                    
+                    // Add click events for scrolling
+                    scrollUp.addEventListener('click', function() {
+                        chatUsersList.scrollTop -= 100; // Scroll up 100px
+                    });
+                    
+                    scrollDown.addEventListener('click', function() {
+                        chatUsersList.scrollTop += 100; // Scroll down 100px
+                    });
+                }
+            }
+            
+            // Call these functions to enhance scrolling
+            enableChatListScrolling();
+            addScrollButtons();
+        });
+            </script>
+        </body>
+        </html>

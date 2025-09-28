@@ -265,13 +265,15 @@
         .back-button:hover i {
             transform: translateX(-3px);
         }
+        
     </style>
 </head>
 <body>
     <!-- Back Button -->
-<a href="javascript:history.back()" class="back-button animate__animated animate__fadeIn">
-    <i class="fas fa-arrow-left"></i> Back
-</a>
+    <a href="{% url 'user_dashboard' %}" class="back-button animate__animated animate__fadeIn">
+        <i class="fas fa-arrow-left"></i> Back
+    </a>
+    
 
     <!-- Artwork Details Section -->
     <div class="container artwork-container">
@@ -291,7 +293,7 @@
 
                     
 
-                    <div class="artwork-price">${{ art.price }}</div>
+                    <div class="artwork-price">Rs.{{ art.price }}</div>
                     
                     <p class="artwork-description">
                         {{ art.desc }}
@@ -302,20 +304,18 @@
                         <!-- <img src="art.jpeg" alt="Maria Chen" class="artist-avatar"> -->
                         <div class="artist-info">
                             <h3>{{ user_artist.name }}</h3>
-                            <p>Digital Artist • 150+ Artworks</p>
+                            <p>Artist • 10+ Artworks</p>
                         </div>
                         <a class="btn-glow ms-auto" style="text-decoration: none;" href="{% url 'artist_profile' user_artist.id %}">View Profile</a>
                     </div>
 
                     <div class="d-flex gap-3 mt-4">
-
                         {% if art.status == "1" %}
                         <a class="btn-glow flex-grow-1" href="{% url 'paymentpage' art.id %}" style="text-decoration: none; background-color: green; color: white;">Buy</a>
                     {% else %}
                         <span class="btn-glow flex-grow-1" style="text-decoration: none; background-color: red; color: white; padding: 10px; border-radius: 5px;">Sold out</span>
                     {% endif %}
                     
-
                         <a style="text-decoration: none;" class="btn-glow flex-grow-1" href="{% url 'chatsystem' user_artist.id %}">Chat</a>
 
                         <a href="{% url 'reviewpage' art.id %}" style="text-decoration: none;" class="btn-glow flex-grow-1">Review</a>

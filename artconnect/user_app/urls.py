@@ -30,6 +30,13 @@ urlpatterns = [
 
     path('chatsystem/<int:receiver_id>/', views.chatsystem, name='chatsystem'),
 
+    path('logout/', views.logout_view, name='logout'),
+
+    path('', views.home, name='home'),
+
+        
+    path('enquiry/', views.enquiry_view, name='enquiry')
+
 
 
 

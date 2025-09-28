@@ -5,10 +5,11 @@ from django.views.decorators.csrf import csrf_exempt
 
 from django.http import JsonResponse
 from django.template.loader import render_to_string
-
+from django.contrib.auth import logout
 import secrets
-
-
+from django.shortcuts import render, redirect
+from django.contrib import messages
+from art_app.models import Enquirytable
 
 # Create your views here.
 
@@ -139,14 +140,16 @@ def artist_profile_page(request,id):
 
     return render(request,'artist_profile.html',{'user_artist':user_artist,'artist_details':artist_details,'artist_details_art':artist_details_art})
 
-def search(request):
-    price_filter = request.GET.get('price') 
 
-    if(price_filter=='1'):
+def search(request):
+    price_filter = int(request.GET.get('price'))
+    print(f"Price filter: {price_filter}")
+
+    if(price_filter==1):
         art_list=Arttable.objects.filter(price__lt=100)
-    elif(price_filter=='2'):
+    elif(price_filter==2):
         art_list=Arttable.objects.filter(price__gte=100,price__lte=1000)
-    elif(price_filter=='3'):
+    elif(price_filter==3):
         art_list=Arttable.objects.filter(price__gte=1000)
     else:
         art_list=Arttable.objects.all()
@@ -208,8 +211,7 @@ def process_payment(request):
         except Exception as e:
             print(f"Error: {e}")
             return JsonResponse({'status': 'error', 'message': str(e)}, status=400)
-    
-    return JsonResponse({'status': 'error'}, status=405)
+        return JsonResponse({'status': 'error'}, status=405)
 
 def myorders(request):
     user_id=request.session.get('user_id')
@@ -284,4 +286,29 @@ def mycart(request):
 
 
 
+def logout_view(request):
+    logout(request)
+    return redirect('home')
 
+
+def home(request):
+    return render(request, 'home.html')
+
+def enquiry_view(request):
+    if request.method == 'POST':
+        #print("--------------------------------------------------------------------------------------")
+        email = request.POST.get('email')
+        phone = request.POST.get('phone')
+        message = request.POST.get('message')
+        
+        
+
+        if email and phone and message:
+            # Save data to the database
+            enquiry = Enquirytable(email=email, phone=phone, message=message)
+            enquiry.save()
+            
+            messages.success(request, "Your enquiry has been submitted successfully!")
+            return redirect('enquiry')  # Redirect to clear the form
+
+    return render(request, 'enquiry.html')

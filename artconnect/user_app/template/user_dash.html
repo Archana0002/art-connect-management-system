@@ -245,7 +245,7 @@
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav ms-auto">
                     <li class="nav-item">
-                        <a class="nav-link" href="#">Explore</a>
+                        <a class="nav-link" href="{% url 'enquiry' %}">Enquiry</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="{% url 'painting' %}">Paintings</a>
@@ -256,6 +256,18 @@
                     <li class="nav-item">
                         <a class="nav-link" href="{% url 'sclupture_show' %}">Sculptures</a>
                     </li>
+                    <!-- Add this inside the navbar-nav ul, right before the closing </ul> tag -->
+                    
+                    <li class="nav-item">
+                        <form id="logout-form" action="{% url 'logout' %}" method="post" style="display: none;">
+                            {% csrf_token %}
+                        </form>
+                        <a href="#" class="nav-link" onclick="document.getElementById('logout-form').submit();">
+                            <i class="fas fa-arrow-left me-2"></i> Logout
+                        </a>
+                    </li>
+                    
+                    
                 </ul>
             </div>
         </div>
@@ -269,18 +281,20 @@
         <!-- Filters -->
 
         <div class="filters glass">
-            <div class="row g-3">
-            <form action="{% url 'search' %}" method="get">  <!-- Form to pass data to 'search' URL -->
-                <div class="col-md-3">
-                    <select class="form-select bg-black text-light" name="price" onchange="this.form.submit()">
-                        <option value="0"{% if price_filter == '0' %}selected{% endif %}>Price Range</option>
-                        <option value="1"{% if price_filter == '1' %}selected{% endif %}>Under $100</option>
-                        <option value="2"{% if price_filter == '2' %}selected{% endif %}>$100 - $500</option>
-                        <option value="3"{% if price_filter == '3' %}selected{% endif %}>$1000+</option>
-                    </select>
-                </div>  
+            <form action="{% url 'search' %}" method="get">
+                <div class="row g-3">
+                    <div class="col-md-3">
+                        <select class="form-select bg-black text-light" name="price" onchange="this.form.submit()">
+                            <option value="0"{% if price_filter == 0 %}selected{% endif %}>Price Range</option>
+                            <option value="1"{% if price_filter == 1 %}selected{% endif %}>Under 100</option>
+                            <option value="2"{% if price_filter == 2 %}selected{% endif %}>100 - 500</option>
+                            <option value="3"{% if price_filter == 3 %}selected{% endif %}>1000+</option>
+                        </select>
+                    </div>
+                </div>
             </form>
-            </div>
+           
+        
             <div class="d-flex flex-wrap gap-2 mt-3">
                 <a class="filter-btn" href="{% url 'user_dashboard' %}">All Art</a>
                 <a class="filter-btn" href="{% url 'digital_dashboard' %}">Digital</a>
@@ -336,6 +350,9 @@
     <!-- Custom JavaScript -->
     <script>
         // Animate cards on scroll
+        function goBack() {
+        window.history.back();
+        }
         document.addEventListener('DOMContentLoaded', function() {
             const cards = document.querySelectorAll('.art-card');
             
